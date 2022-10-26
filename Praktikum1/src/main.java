@@ -6,17 +6,17 @@ public class main {
     public static void main(String[] args){
 
         //Transfer Beispiele
-        Transfer T1=new Transfer("25.08.2022",-2500,"waere falsch");
+        Transfer T1=new Transfer("25.08.2022",2500,"waere falsch");
         T1.printObject();
 
-        Transfer T2 = new Transfer("25.08.2022",2500,"Beschreibung");
+        Transfer T2 = new Transfer("25.08.2022",-2500,"Beschreibung");
         T2.printObject();
 
         Transfer T3=new Transfer("12.07.2022",200,"Bonus","Beispiel Sender", "Beispiel Empfänger");
-        T2.printObject();
+        T3.printObject();
 
         Transfer T4 = new Transfer(T3);
-        T3.printObject();
+        T4.printObject();
 
 
 
@@ -32,6 +32,9 @@ public class main {
 
         Payment P4 = new Payment(P3);
         P4.printObject();
+        P4.setDate("22.05.2021");
+        P4.printObject();
+        P3.printObject();
 
 
     }

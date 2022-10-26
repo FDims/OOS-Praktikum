@@ -72,14 +72,14 @@ public class Transfer {
      *
     */
     public Transfer (String date1 , double amount1, String desc){
-        this.date = date1;
+        setDate(date1);
         setAmount(amount1);
-        this.description=desc;
+        setDescription(desc);
     }
     public Transfer (String date2, double amount2, String desc1, String send, String rec){
         this(date2,amount2,desc1);
-        this.sender = send;
-        this.recipient=rec;
+        setSender(send);
+        setRecipient(rec);
     }
 
     /*
@@ -93,14 +93,16 @@ public class Transfer {
         this(other.date, other.amount, other.description, other.sender, other.recipient);
     }
 
+
+    //Funktion für die Objekte der Klasse auszudrücken.
     public void printObject(){
         if(status)
             System.out.println(
-                "Date of transfer: " +date+
-                        "\n Amount of transfer: " +amount+
-                        "\n Description: " +description+
-                        "\n Sender: " +sender+
-                        "\n Recipient: "+recipient+"\n"
+                " Date of transfer: " + getDate()+
+                        "\n Amount of transfer: " +getAmount()+
+                        "\n Description: " +getDescription()+
+                        "\n Sender: " +getSender()+
+                        "\n Recipient: "+getRecipient()+"\n"
                 );
         else
             System.out.println("Transaction is failed !"+"\n");

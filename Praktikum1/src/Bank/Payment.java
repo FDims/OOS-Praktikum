@@ -1,5 +1,5 @@
 package Bank;
-
+//Fachrial Dimas Putra Perdana
 public class Payment {
 
     private String date;                    //Attribute für die Datum
@@ -80,9 +80,9 @@ public class Payment {
      *
      */
     public Payment (String date1 , double amount1, String desc){
-        this.date = date1;
-        this.amount=amount1;
-        this.description=desc;
+       setDate(date1);
+       setAmount(amount1);
+       setDescription(desc);
     }
     public Payment (String date2, double amount2, String desc1, double in, double out){
         this(date2,amount2,desc1);
@@ -101,14 +101,16 @@ public class Payment {
         this(other.date,other.amount, other.description, other.incomingInterest, other.outgoingInterest);
     }
 
+
+    //Funktion für die Objekte der Klasse auszudrücken.
     public void printObject(){
         if(status)
             System.out.println(
-                "Date of payment: " +date+
-                        "\n Amount of payment: " +amount+
-                        "\n Description: " +description+
-                        "\n Incoming interest: " +incomingInterest+
-                        "\n Outgoing interest: "+outgoingInterest+"\n"
+                " Date of payment: " +getDate()+
+                        "\n Amount of payment: " +getAmount()+
+                        "\n Description: " +getDescription()+
+                        "\n Incoming interest: " +getIncomingInterest()+
+                        "\n Outgoing interest: "+getOutgoingInterest()+"\n"
             );
         else
             System.out.println("Transaction is failed !"+"\n");
