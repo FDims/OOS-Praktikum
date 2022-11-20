@@ -1,0 +1,136 @@
+Index: src/Bank/CalculateBill.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Bank/CalculateBill.java b/src/bank/CalculateBill.java
+rename from src/Bank/CalculateBill.java
+rename to src/bank/CalculateBill.java
+--- a/src/Bank/CalculateBill.java	
++++ b/src/bank/CalculateBill.java	
+@@ -1,4 +1,4 @@
+-package Bank;
++package bank;
+ 
+ public interface CalculateBill {
+     public double calculate();
+Index: src/Bank/Payment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Bank/Payment.java b/src/bank/Payment.java
+rename from src/Bank/Payment.java
+rename to src/bank/Payment.java
+--- a/src/Bank/Payment.java	
++++ b/src/bank/Payment.java	
+@@ -1,4 +1,4 @@
+-package Bank;
++package bank;
+ 
+ 
+ public class Payment extends Transaction implements CalculateBill{
+@@ -104,8 +104,8 @@
+     }
+ 
+     /**
+-     *
+-     * @return
++     * function to write attributes of the class
++     * @return a String of attributes
+      */
+     @Override
+     public String toString(){
+@@ -118,9 +118,9 @@
+     }
+ 
+     /**
+-     *
+-     * @param obj
+-     * @return
++     * function to compare current Variable and an Object
++     * @param obj other objekt to compare with
++     * @return whether the result of compare true or false
+      */
+     @Override
+     public boolean equals (Object obj){
+Index: src/Bank/Transaction.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Bank/Transaction.java b/src/bank/Transaction.java
+rename from src/Bank/Transaction.java
+rename to src/bank/Transaction.java
+--- a/src/Bank/Transaction.java	
++++ b/src/bank/Transaction.java	
+@@ -1,4 +1,4 @@
+-package Bank;
++package bank;
+ 
+ public abstract class Transaction implements CalculateBill{
+     protected String date;
+@@ -67,8 +67,8 @@
+     }
+ 
+     /**
+-     *
+-     * @return
++     * function to write attributes of the class
++     * @return a String of attributes
+      */
+     public String toString(){
+         if(!status)
+@@ -80,9 +80,9 @@
+     }
+ 
+     /**
+-     *
+-     * @param obj
+-     * @return
++     * function to compare current Variable and an Object
++     * @param obj other objekt to compare with
++     * @return whether the result of compare true or false
+      */
+     @Override
+     public boolean equals(Object obj){
+Index: src/Bank/Transfer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Bank/Transfer.java b/src/bank/Transfer.java
+rename from src/Bank/Transfer.java
+rename to src/bank/Transfer.java
+--- a/src/Bank/Transfer.java	
++++ b/src/bank/Transfer.java	
+@@ -1,4 +1,4 @@
+-package Bank;
++package bank;
+ 
+ public class Transfer extends Transaction implements CalculateBill{
+     private String sender;                          //Attribute für die Name von Sender
+@@ -100,8 +100,8 @@
+     }
+ 
+     /**
+-     *
+-     * @return
++     * function to write attributes of the class
++     * @return a String of attributes
+      */
+     @Override
+     public String toString(){
+@@ -114,9 +114,9 @@
+     }
+ 
+     /**
+-     *
+-     * @param obj
+-     * @return
++     * function to compare current Variable and an Object
++     * @param obj other objekt to compare with
++     * @return whether the result of compare true or false
+      */
+     @Override
+     public boolean equals (Object obj){

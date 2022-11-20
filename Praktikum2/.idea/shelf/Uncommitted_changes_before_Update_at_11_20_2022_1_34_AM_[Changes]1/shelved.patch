@@ -1,0 +1,1504 @@
+Index: src/main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main.java b/src/main.java
+--- a/src/main.java	
++++ b/src/main.java	
+@@ -1,11 +1,13 @@
+-import Bank.Transaction;
+-import Bank.Payment;
+-import Bank.Transfer;
++import bank.*;
++import bank.exceptions.*;
++
++import java.util.List;
++
+ 
+ public class main {
+ 
+-    public static void main(String[] args){
+-        Transfer transfer1 = new Transfer("02.08.2022",520,"this is Transfer","Sender is me","recipient also me");
++    public static void main(String[] args) throws TransactionAlreadyExistException, AccountAlreadyExistsException, TransactionAttributeException {
++        /*Transfer transfer1 = new Transfer("02.08.2022",520,"this is Transfer","Sender is me","recipient also me");
+         Transfer transfer1copy = new Transfer(transfer1);
+ 
+         System.out.println(transfer1.equals(transfer1copy));
+@@ -25,7 +27,138 @@
+ 
+         payment1.setAmount(1500);
+         System.out.println(payment1.toString());
+-        System.out.println(payment1copy.toString());
++        System.out.println(payment1copy.toString());*/
++
++        PrivateBank privateBank=new PrivateBank("bank1", 0.15,0.1);
++        PrivateBankAlt privateBankAlt = new PrivateBankAlt("altBank1",0.12,0.14);
++
++        privateBank.createAccount("Antonio", List.of(
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Jessica"),
++                new Payment("01.02.2021",1200,"this is deposit",0.15,0.1),
++                new Payment("01.02.2021",-1100,"this is deposit",0.12,0.3),
++                new Transfer("02.08.2022",450,"this is Transfer","Alexa","Antonio")
++        ));
++
++        privateBankAlt.createAccount("Antonio", List.of(
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Jessica"),
++                new Payment("01.02.2021",1200,"this is deposit",0.15,0.1),
++                new Payment("01.02.2021",-1100,"this is deposit",0.12,0.3),
++                new Transfer("02.08.2022",950,"this is Transfer","Alexa","Antonio")
++        ));
++
++        privateBank.createAccount("Alexa", List.of(
++                new Transfer("02.08.2022",560,"this is Transfer","Alexa","Jessica"),
++                new Payment("01.02.2021",1255,"this is deposit",0.15,0.1),
++                new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3),
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")
++        ));
++        privateBankAlt.createAccount("Alexa", List.of(
++                new Transfer("02.08.2022",560,"this is Transfer","Alexa","Jessica"),
++                new Payment("01.02.2021",1255,"this is deposit",0.15,0.1),
++                new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3),
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")
++        ));
++
++        System.out.println(privateBank);
++        System.out.println(privateBankAlt);
++
++        try{
++            privateBankAlt.createAccount("Alexa");
++        }catch (AccountAlreadyExistsException fail){
++            System.out.println(fail);
++        }
++
++        try{
++            privateBankAlt.createAccount("Alexa",List.of(new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")));
++        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException fail){
++            System.out.println(fail);
++        }
++
++        try{
++            privateBankAlt.createAccount("Alexa",List.of(new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")));
++        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException fail){
++            System.out.println(fail);
++        }
++
++        try{
++            privateBankAlt.createAccount("Anderson",List.of(new Payment("01.02.2021",-1350,"this is deposit",1.5,0.3)));
++        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException fail){
++            System.out.println(fail);
++        }
++
++        try{
++            privateBankAlt.addTransaction("Michael", new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa"));
++        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException fail){
++            System.out.println(fail);
++        }
++        try{
++            privateBankAlt.addTransaction("Alexa", new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa"));
++        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException fail){
++            System.out.println(fail);
++        }
++
++        try{
++            privateBankAlt.addTransaction("Alexa", new Payment("01.02.2021",1350,"this is deposit",1.5,0.3));
++        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException fail){
++            System.out.println(fail);
++        }
++
++        try{
++            privateBankAlt.removeTransaction("Michael",new Payment("01.02.2021",1350,"this is deposit",1.5,0.3));
++        } catch (AccountDoesNotExistException|TransactionDoesNotExistException fail) {
++            System.out.println(fail);
++        }
++        try{
++            privateBankAlt.removeTransaction("Alexa",new Payment("01.01.2021",-1350,"this is deposit",0.12,0.3));
++        } catch (AccountDoesNotExistException|TransactionDoesNotExistException fail) {
++            System.out.println(fail);
++        }
++
++        System.out.println(privateBankAlt);
++        try{
++            privateBankAlt.removeTransaction("Alexa",new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3));
++        } catch (AccountDoesNotExistException|TransactionDoesNotExistException fail) {
++            System.out.println(fail);
++        }
++        System.out.println(privateBankAlt);
++
++        System.out.println(privateBankAlt.getTransactionsSorted("Alexa",true));
++        System.out.println(privateBankAlt.getTransactionsSorted("Alexa",false));
++        System.out.println(privateBankAlt.getTransactionsByType("Alexa",true));
++        System.out.println(privateBankAlt.getTransactionsByType("Alexa",false));
++
++        System.out.println(privateBankAlt.containsTransaction("Alexa",new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3)));
++        System.out.println(privateBankAlt.containsTransaction("Alexa",new Payment("03.05.2021",-1550,"this is deposit",0.12,0.3)));
++        System.out.println(privateBankAlt.containsTransaction("Sarah",new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3)));
++
++        PrivateBank privateBank2=new PrivateBank("bank1", 0.15,0.1);
++        privateBank2.createAccount("Antonio", List.of(
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Jessica"),
++                new Payment("01.02.2021",1200,"this is deposit",0.15,0.1),
++                new Payment("01.02.2021",-1100,"this is deposit",0.12,0.3),
++                new Transfer("02.08.2022",450,"this is Transfer","Alexa","Antonio")
++        ));
++        privateBank2.createAccount("Alexa", List.of(
++                new Transfer("02.08.2022",560,"this is Transfer","Alexa","Jessica"),
++                new Payment("01.02.2021",1255,"this is deposit",0.15,0.1),
++                new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3),
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")
++        ));
++
++        PrivateBank privateBank3=new PrivateBank("bank1", 0.15,0.1);
++        privateBank3.createAccount("Antonio", List.of(
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Jessica"),
++                new Payment("01.02.2021",1200,"this is deposit",0.15,0.1)
++
++        ));
++        privateBank3.createAccount("Alexa", List.of(
++                new Transfer("02.08.2022",560,"this is Transfer","Alexa","Jessica"),
++                new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")
++        ));
++
++        System.out.println(privateBank.equals(privateBank2));
++        System.out.println(privateBank.equals(privateBank3));
++
+     }
+ 
+ }
+Index: ../Praktikum1/Praktikum1.iml
+===================================================================
+diff --git a/../Praktikum1/Praktikum1.iml b/../Praktikum1/Praktikum1.iml
+deleted file mode 100644
+--- a/../Praktikum1/Praktikum1.iml	
++++ /dev/null	
+@@ -1,11 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="JAVA_MODULE" version="4">
+-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$">
+-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: ../Praktikum1/.idea/vcs.xml
+===================================================================
+diff --git a/../Praktikum1/.idea/vcs.xml b/../Praktikum1/.idea/vcs.xml
+deleted file mode 100644
+--- a/../Praktikum1/.idea/vcs.xml	
++++ /dev/null	
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ../Praktikum1/.idea/codeStyles/Project.xml
+===================================================================
+diff --git a/../Praktikum1/.idea/codeStyles/Project.xml b/../Praktikum1/.idea/codeStyles/Project.xml
+deleted file mode 100644
+--- a/../Praktikum1/.idea/codeStyles/Project.xml	
++++ /dev/null	
+@@ -1,7 +0,0 @@
+-<component name="ProjectCodeStyleConfiguration">
+-  <code_scheme name="Project" version="173">
+-    <ScalaCodeStyleSettings>
+-      <option name="MULTILINE_STRING_CLOSING_QUOTES_ON_NEW_LINE" value="true" />
+-    </ScalaCodeStyleSettings>
+-  </code_scheme>
+-</component>
+\ No newline at end of file
+Index: ../Praktikum1/.idea/misc.xml
+===================================================================
+diff --git a/../Praktikum1/.idea/misc.xml b/../Praktikum1/.idea/misc.xml
+deleted file mode 100644
+--- a/../Praktikum1/.idea/misc.xml	
++++ /dev/null	
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_18" project-jdk-name="19" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/out" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ../Praktikum1/.idea/modules.xml
+===================================================================
+diff --git a/../Praktikum1/.idea/modules.xml b/../Praktikum1/.idea/modules.xml
+deleted file mode 100644
+--- a/../Praktikum1/.idea/modules.xml	
++++ /dev/null	
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/Praktikum1.iml" filepath="$PROJECT_DIR$/Praktikum1.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ../Praktikum1/src/Bank/Payment.java
+===================================================================
+diff --git a/../Praktikum1/src/Bank/Payment.java b/../Praktikum1/src/Bank/Payment.java
+deleted file mode 100644
+--- a/../Praktikum1/src/Bank/Payment.java	
++++ /dev/null	
+@@ -1,117 +0,0 @@
+-package Bank;
+-
+-public class Payment {
+-
+-    private String date;                    //Attribute für die Datum
+-    private double amount;                  //Attribute für den Betrag von Ein-/Auszahlung (kann negative sein)
+-    private String description;             //Attribute für Beschreibung
+-    private double incomingInterest;        //Attribute für Zinsen der Einzahluing
+-    private double outgoingInterest;        //Attribute für Zinsen der Auszahlung
+-    private boolean status = true;                         //Attribute für den Status der Überweisung
+-
+-
+-
+-    /*
+-     *
+-     * Getter und Setter for Attributes
+-     * um jede Attributes von außen zuzugriffen bzw, um zu setzen oder zu kriegen
+-     * set = zu setzen, get = zu kriegen
+-     *
+-     **/
+-    public String getDate(){
+-        return this.date;
+-    }
+-
+-    public void setDate(String date1) {
+-        this.date = date1;
+-    }
+-
+-    public double getAmount() {
+-        return amount;
+-    }
+-
+-    public void setAmount(double amount1) {
+-        this.amount = amount1;
+-    }
+-
+-    public String getDescription() {
+-        return description;
+-    }
+-
+-    public void setDescription(String desc) {
+-        this.description = desc;
+-    }
+-
+-    public double getIncomingInterest() {
+-        return incomingInterest;
+-    }
+-
+-    public void setIncomingInterest(double incomingInterest) {
+-        if(incomingInterest < 0 || incomingInterest > 1) {                                                          //Überprüfung die Zahl von Zinsen der Einzahlung
+-            System.out.println("Payment error, value of incoming interest must be in percent between 0 and 1!");    //Error Message
+-            status = false;
+-        }else {
+-            this.incomingInterest = incomingInterest;
+-            status=true;
+-        }
+-    }
+-
+-    public double getOutgoingInterest() {
+-        return outgoingInterest;
+-    }
+-
+-    public void setOutgoingInterest(double outgoingInterest) {
+-        if(outgoingInterest < 0 || outgoingInterest > 1) {                                                       //Überprüfung die Zahl von Zinsen der Auszahlung
+-            System.out.println("Payment error, value of outgoing interest must be in percent between 0 and 1!"); //Error Message
+-            status=false;
+-        }else {
+-            this.outgoingInterest = outgoingInterest;
+-            status=true;
+-        }
+-    }
+-
+-
+-
+-    /*
+-     *
+-     * Konstruktor
+-     * die Variable mit dem Datentyp der Klasse zu konstruieren
+-     * in dem die Parametern als Attributes genommen werden
+-     *
+-     */
+-    public Payment (String date1 , double amount1, String desc){
+-        this.date = date1;
+-        this.amount=amount1;
+-        this.description=desc;
+-    }
+-    public Payment (String date2, double amount2, String desc1, double in, double out){
+-        this(date2,amount2,desc1);
+-        setIncomingInterest(in);
+-        setOutgoingInterest(out);
+-    }
+-
+-    /*
+-     *
+-     * Copy-Konstruktor
+-     * Konstruktor, in dem Attributes von anderen Variable mit gleicen Typ
+-     * von einer neuen Variable übernommen werden.
+-     *
+-     */
+-    public Payment (Payment other){
+-        this(other.date,other.amount, other.description, other.incomingInterest, other.outgoingInterest);
+-    }
+-
+-    public void printObject(){
+-        if(status)
+-            System.out.println(
+-                "Date of payment: " +date+
+-                        "\n Amount of payment: " +amount+
+-                        "\n Description: " +description+
+-                        "\n Incoming interest: " +incomingInterest+
+-                        "\n Outgoing interest: "+outgoingInterest+"\n"
+-            );
+-        else
+-            System.out.println("Transaction is failed !"+"\n");
+-    }
+-
+-}
+Index: ../Praktikum1/.idea/codeStyles/codeStyleConfig.xml
+===================================================================
+diff --git a/../Praktikum1/.idea/codeStyles/codeStyleConfig.xml b/../Praktikum1/.idea/codeStyles/codeStyleConfig.xml
+deleted file mode 100644
+--- a/../Praktikum1/.idea/codeStyles/codeStyleConfig.xml	
++++ /dev/null	
+@@ -1,5 +0,0 @@
+-<component name="ProjectCodeStyleConfiguration">
+-  <state>
+-    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
+-  </state>
+-</component>
+\ No newline at end of file
+Index: ../Praktikum1/.idea/.gitignore
+===================================================================
+diff --git a/../Praktikum1/.idea/.gitignore b/../Praktikum1/.idea/.gitignore
+deleted file mode 100644
+--- a/../Praktikum1/.idea/.gitignore	
++++ /dev/null	
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: ../Praktikum1/src/main.java
+===================================================================
+diff --git a/../Praktikum1/src/main.java b/../Praktikum1/src/main.java
+deleted file mode 100644
+--- a/../Praktikum1/src/main.java	
++++ /dev/null	
+@@ -1,38 +0,0 @@
+-import Bank.Transfer;
+-import Bank.Payment;
+-
+-
+-public class main {
+-    public static void main(String[] args){
+-
+-        //Transfer Beispiele
+-        Transfer T1=new Transfer("25.08.2022",-2500,"waere falsch");
+-        T1.printObject();
+-
+-        Transfer T2 = new Transfer("25.08.2022",2500,"Beschreibung");
+-        T2.printObject();
+-
+-        Transfer T3=new Transfer("12.07.2022",200,"Bonus","Beispiel Sender", "Beispiel Empfänger");
+-        T2.printObject();
+-
+-        Transfer T4 = new Transfer(T3);
+-        T3.printObject();
+-
+-
+-
+-        //Payment Beispiele
+-        Payment P1 = new Payment("23.09.2022",1000,"Miete");
+-        P1.printObject();
+-
+-        Payment P2 = new Payment("23.01.2022",250.5,"Beschreibung",0.2,2);
+-        P2.printObject();
+-
+-        Payment P3 = new Payment("23.01.2022",250.5,"Einzahlung",0.2,0.5);
+-        P3.printObject();
+-
+-        Payment P4 = new Payment(P3);
+-        P4.printObject();
+-
+-
+-    }
+-}
+Index: ../Praktikum1/src/Bank/Transfer.java
+===================================================================
+diff --git a/../Praktikum1/src/Bank/Transfer.java b/../Praktikum1/src/Bank/Transfer.java
+deleted file mode 100644
+--- a/../Praktikum1/src/Bank/Transfer.java	
++++ /dev/null	
+@@ -1,109 +0,0 @@
+-package Bank;
+-
+-public class Transfer {
+-    private String date;                            //Attribute für die Datum
+-    private double amount;                          //Attribute für den Betrag der Überweisung
+-    private String description;                     //Attribute für die Beschreibung der Überweisung
+-    private String sender;                          //Attribute für die Name von Sender
+-    private String recipient;                       //Attribüte für die Name von Empfänger
+-    private boolean status = true;                         //Attribute für den Status der Überweisung
+-
+-
+-
+-    /*
+-    *
+-    * Getter und Setter for Attributes
+-    * um jede Attributes von außen zuzugriffen bzw, um zu setzen oder zu kriegen
+-    * set = zu setzen, get = zu kriegen
+-    *
+-    **/
+-    public String getDate(){
+-        return this.date;
+-    }
+-
+-    public void setDate(String date1) {
+-        this.date = date1;
+-    }
+-
+-    public double getAmount() {
+-        return amount;
+-    }
+-
+-    public void setAmount(double amount1) {
+-        if(amount1 < 0) {                                                                               //Überprüfung des Anzahl der Überweisung
+-            System.out.println("Transfer error, the amount of transfer cannot be negative!");   //Error Message
+-            status = false;
+-        } else {
+-            this.amount = amount1;
+-            status = true;
+-        }
+-    }
+-
+-    public String getDescription() {
+-        return description;
+-    }
+-
+-    public void setDescription(String desc) {
+-        this.description = desc;
+-    }
+-
+-    public String getSender() {
+-        return sender;
+-    }
+-
+-    public void setSender(String sender) {
+-        this.sender = sender;
+-    }
+-
+-    public String getRecipient() {
+-        return recipient;
+-    }
+-
+-    public void setRecipient(String recipient) {
+-        this.recipient = recipient;
+-    }
+-
+-
+-    /*
+-    *
+-    * Konstruktor
+-    * die Variable mit dem Datentyp der Klasse zu konstruieren
+-    * in dem die Parametern als Attributes genommen werden
+-     *
+-    */
+-    public Transfer (String date1 , double amount1, String desc){
+-        this.date = date1;
+-        setAmount(amount1);
+-        this.description=desc;
+-    }
+-    public Transfer (String date2, double amount2, String desc1, String send, String rec){
+-        this(date2,amount2,desc1);
+-        this.sender = send;
+-        this.recipient=rec;
+-    }
+-
+-    /*
+-    *
+-    * Copy-Konstruktor
+-    * Konstruktor, in dem Attributes von anderen Variable mit gleicen Typ
+-    * von einer neuen Variable übernommen werden.
+-    *
+-    */
+-    public Transfer(Transfer other){
+-        this(other.date, other.amount, other.description, other.sender, other.recipient);
+-    }
+-
+-    public void printObject(){
+-        if(status)
+-            System.out.println(
+-                "Date of transfer: " +date+
+-                        "\n Amount of transfer: " +amount+
+-                        "\n Description: " +description+
+-                        "\n Sender: " +sender+
+-                        "\n Recipient: "+recipient+"\n"
+-                );
+-        else
+-            System.out.println("Transaction is failed !"+"\n");
+-    }
+-
+-}
+Index: src/bank/exceptions/AccountDoesNotExistException.java
+===================================================================
+diff --git a/src/bank/exceptions/AccountDoesNotExistException.java b/src/bank/exceptions/AccountDoesNotExistException.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/exceptions/AccountDoesNotExistException.java	
+@@ -0,0 +1,7 @@
++package bank.exceptions;
++
++public class AccountDoesNotExistException extends Exception{
++    public AccountDoesNotExistException(String message){
++        super(message);
++    }
++}
+Index: src/bank/exceptions/TransactionAttributeException.java
+===================================================================
+diff --git a/src/bank/exceptions/TransactionAttributeException.java b/src/bank/exceptions/TransactionAttributeException.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/exceptions/TransactionAttributeException.java	
+@@ -0,0 +1,7 @@
++package bank.exceptions;
++
++public class TransactionAttributeException extends Exception{
++    public TransactionAttributeException(String message){
++        super(message);
++    }
++}
+Index: src/bank/IncomingTransfer.java
+===================================================================
+diff --git a/src/bank/IncomingTransfer.java b/src/bank/IncomingTransfer.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/IncomingTransfer.java	
+@@ -0,0 +1,39 @@
++package bank;
++
++public class IncomingTransfer extends Transfer{
++
++    /**
++     *
++     * @param date
++     * @param desc
++     * @param amount
++     */
++     public IncomingTransfer(String date,  double amount,String desc){
++         super(date,amount,desc);
++     }
++
++    /**
++     *
++     * @param date
++     * @param amount
++     * @param desc
++     * @param send
++     * @param rec
++     */
++     public IncomingTransfer(String date, double amount, String desc, String send, String rec){
++         super(date,amount,desc,send,rec);
++     }
++
++     public IncomingTransfer(IncomingTransfer other){
++         super(other);
++     }
++
++    /**
++     *
++     * @return
++     */
++     @Override
++    public double calculate(){
++         return amount;
++    }
++}
+Index: src/bank/exceptions/TransactionDoesNotExistException.java
+===================================================================
+diff --git a/src/bank/exceptions/TransactionDoesNotExistException.java b/src/bank/exceptions/TransactionDoesNotExistException.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/exceptions/TransactionDoesNotExistException.java	
+@@ -0,0 +1,7 @@
++package bank.exceptions;
++
++public class TransactionDoesNotExistException extends Exception{
++    public TransactionDoesNotExistException(String message){
++        super(message);
++    }
++}
+Index: .idea/uiDesigner.xml
+===================================================================
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/uiDesigner.xml	
+@@ -0,0 +1,124 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Palette2">
++    <group name="Swing">
++      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
++      </item>
++      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.svg" removable="false" auto-create-binding="false" can-attach-label="true">
++        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
++        <initial-values>
++          <property name="text" value="Button" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="RadioButton" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="CheckBox" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="Label" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
++          <preferred-size width="-1" height="20" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
++      </item>
++    </group>
++  </component>
++</project>
+\ No newline at end of file
+Index: src/bank/OutgoingTransfer.java
+===================================================================
+diff --git a/src/bank/OutgoingTransfer.java b/src/bank/OutgoingTransfer.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/OutgoingTransfer.java	
+@@ -0,0 +1,38 @@
++package bank;
++
++public class OutgoingTransfer extends Transfer{
++    /**
++     *
++     * @param date
++     * @param desc
++     * @param amount
++     */
++    public OutgoingTransfer(String date,  double amount,String desc){
++        super(date,amount,desc);
++    }
++
++    /**
++     *
++     * @param date
++     * @param amount
++     * @param desc
++     * @param send
++     * @param rec
++     */
++    public OutgoingTransfer(String date, double amount, String desc, String send, String rec){
++        super(date,amount,desc,send,rec);
++    }
++
++    public OutgoingTransfer(IncomingTransfer other){
++        super(other);
++    }
++
++    /**
++     *
++     * @return
++     */
++    @Override
++    public double calculate(){
++        return -amount;
++    }
++}
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	
++++ b/.idea/modules.xml	
+@@ -2,7 +2,7 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
+-      <module fileurl="file://$PROJECT_DIR$/Praktikum2.iml" filepath="$PROJECT_DIR$/Praktikum2.iml" />
++      <module fileurl="file://$PROJECT_DIR$/Praktikum.iml" filepath="$PROJECT_DIR$/Praktikum.iml" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/bank/PrivateBankAlt.java
+===================================================================
+diff --git a/src/bank/PrivateBankAlt.java b/src/bank/PrivateBankAlt.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/PrivateBankAlt.java	
+@@ -0,0 +1,310 @@
++package bank;
++
++import bank.exceptions.*;
++import java.util.*;
++
++public class PrivateBankAlt implements Bank {
++
++    private String name;
++    private double incomingInterest;
++    private double OutgoingInterest;
++    private Map<String, List<Transaction>> accountsToTransactions = new HashMap<>();
++
++    private boolean status=true;
++
++    /**
++     *
++     * @param name
++     */
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    /**
++     *
++     * @return
++     */
++    public String getName() {
++        return name;
++    }
++
++    /**
++     *
++     * @param incomingInterest
++     */
++    public void setIncomingInterest(double incomingInterest) {
++        if(incomingInterest > 0 && incomingInterest < 1) {
++            this.incomingInterest = incomingInterest;
++        }else status = false;
++    }
++
++    /**
++     *
++     * @return
++     */
++    public double getIncomingInterest() {
++        return incomingInterest;
++    }
++
++    /**
++     *
++     * @param outgoingInterest
++     */
++    public void setOutgoingInterest(double outgoingInterest) {
++        if(outgoingInterest > 0 && outgoingInterest < 1) {
++            OutgoingInterest = outgoingInterest;
++        }else status = false;
++    }
++
++    /**
++     *
++     * @return
++     */
++    public double getOutgoingInterest() {
++        return OutgoingInterest;
++    }
++
++    /**
++     *
++     * @param name
++     * @param incomingInterest
++     * @param outgoingInterest
++     */
++    public PrivateBankAlt(String name, double incomingInterest, double outgoingInterest){
++        this.name=name;
++        setIncomingInterest(incomingInterest);
++        setOutgoingInterest(outgoingInterest);
++    }
++
++    /**
++     *
++     * @param other
++     */
++    public PrivateBankAlt(PrivateBankAlt other){
++        this(other.name,other.incomingInterest,other.OutgoingInterest);
++    }
++
++    /**
++     * function to write attributes of the class
++     * @return a String of attributes
++     */
++    @Override
++    public String toString(){
++        String res = "Name :"+this.name+
++                "\nIncoming interest: "+this.incomingInterest+
++                "\nOutgoing interest: "+this.OutgoingInterest;
++        Set<String> keys = accountsToTransactions.keySet();
++        for(String key:keys){
++            res+="\n"+key+"=> \n";
++            List<Transaction> Lists = accountsToTransactions.get(key);
++            res+="[\n";
++            for(Transaction transaction:Lists)
++                res+=transaction;
++            res+="]\n";
++        }
++        return res;
++    }
++
++    /**
++     * function to compare current Variable and an Object
++     * @param obj other objekt to compare with
++     * @return whether the result of compare true or false
++     */
++    @Override
++    public boolean equals(Object obj){
++        if(this==obj)
++            return true;
++        if(obj instanceof PrivateBankAlt privateBankAlt){
++            if(this.name==privateBankAlt.name && this.incomingInterest==privateBankAlt.incomingInterest&&this.OutgoingInterest==privateBankAlt.OutgoingInterest){
++                return true;
++            }else
++                return false;
++        }else
++            return false;
++    }
++
++    /**
++     *
++     * @param account the account to be added
++     * @throws AccountAlreadyExistsException
++     */
++    @Override
++    public void createAccount(String account) throws AccountAlreadyExistsException{
++        if(accountsToTransactions.containsKey(account))
++            throw new AccountAlreadyExistsException("account with the name "+account+" in the bank"+name+" already exists!");
++        else {
++            accountsToTransactions.put(account, List.of());
++            System.out.println("account with the name " + account + " has succesfully created in the bank " + name);
++        }
++    }
++
++    /**
++     *
++     * @param account      the account to be added
++     * @param transactions a list of already existing transactions which should be added to the newly created account
++     * @throws AccountAlreadyExistsException
++     * @throws TransactionAlreadyExistException
++     * @throws TransactionAttributeException
++     */
++    @Override
++    public void createAccount(String account, List<Transaction> transactions)
++            throws AccountAlreadyExistsException,TransactionAlreadyExistException,TransactionAttributeException {
++        if (accountsToTransactions.containsKey(account)) {
++            throw new AccountAlreadyExistsException("account with the name " + account + " in the bank" + name + " already exists!");
++        } else {
++            for (Transaction tr : transactions) {
++                if (accountsToTransactions.containsKey(account) && accountsToTransactions.get(account).contains(transactions)) {
++                    throw new TransactionAlreadyExistException("duplicate transaction can not be added to the account!");
++                } else {
++                    if (tr instanceof Payment payment) {
++                        setIncomingInterest(payment.getIncomingInterest());
++                        setOutgoingInterest(payment.getOutgoingInterest());
++                        if (!status) {
++                            throw new TransactionAttributeException("Transaction attribute fails!");
++                        }
++                    }
++
++                }
++            }
++            accountsToTransactions.put(account, transactions);
++            System.out.println("account with the name " + account + " and its transaction has succesfully created in the bank " + name);
++        }
++    }
++
++    /**
++     *
++     * @param account     the account to which the transaction is added
++     * @param transaction the transaction which should be added to the specified account
++     * @throws TransactionAlreadyExistException
++     * @throws AccountDoesNotExistException
++     * @throws TransactionAttributeException
++     */
++    @Override
++    public void addTransaction(String account, Transaction transaction)
++            throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException{
++        if(!accountsToTransactions.containsKey(account)){
++            throw new AccountDoesNotExistException("account with the name "+account+" in the bank"+name+" does not exist!");
++        }else {
++            if(accountsToTransactions.get(account).contains(transaction)){
++                throw new TransactionAlreadyExistException("this transaction is already exist in the account "+account);
++            }else{
++                if(transaction instanceof Payment payment) {
++                    setIncomingInterest(payment.getIncomingInterest());
++                    setOutgoingInterest(payment.getOutgoingInterest());
++                    if(!status){
++                        throw new TransactionAttributeException("Transaction attribute fails!");
++
++                    }
++                }
++                List<Transaction> Lists = new ArrayList<>(accountsToTransactions.get(account));
++                Lists.add(transaction);
++                accountsToTransactions.put(account,Lists);
++                System.out.println("Transaction successfully added");
++
++            }
++        }
++    }
++
++    /**
++     *
++     * @param account     the account from which the transaction is removed
++     * @param transaction the transaction which is removed from the specified account
++     * @throws AccountDoesNotExistException
++     * @throws TransactionDoesNotExistException
++     */
++    @Override
++    public void removeTransaction(String account, Transaction transaction)
++            throws AccountDoesNotExistException, TransactionDoesNotExistException{
++        if(!accountsToTransactions.containsKey(account)){
++            throw new AccountDoesNotExistException("account with the name "+account+" in the bank"+name+" does not exist!");
++        }else {
++            if(!accountsToTransactions.get(account).contains(transaction)){
++                throw new TransactionDoesNotExistException("this transaction does not exist in the account "+account);
++            }else{
++                List<Transaction> Lists = new ArrayList<>(accountsToTransactions.get(account));
++                Lists.remove(transaction);
++                accountsToTransactions.put(account,Lists);
++                System.out.println("Transaction successfully removed");
++            }
++        }
++    }
++
++    /**
++     *
++     * @param account     the account from which the transaction is checked
++     * @param transaction the transaction to search/look for
++     * @return
++     */
++    @Override
++    public boolean containsTransaction(String account, Transaction transaction){
++        if(accountsToTransactions.containsKey(account)){
++            if(accountsToTransactions.get(account).contains(transaction))
++                return true;
++            else
++                return false;
++        }else
++            return false;
++    }
++
++    /**
++     *
++     * @param account the selected account
++     * @return
++     */
++    @Override
++    public double getAccountBalance(String account){
++        double balance=0;
++        List<Transaction> Lists = accountsToTransactions.get(account);
++        for(Transaction tr:Lists){
++            balance += tr.calculate();
++        }
++        return balance;
++    }
++
++    /**
++     *
++     * @param account the selected account
++     * @return
++     */
++    @Override
++    public List<Transaction> getTransactions(String account){
++        return accountsToTransactions.get(account);
++    }
++
++    /**
++     *
++     * @param account the selected account
++     * @param asc     selects if the transaction list is sorted in ascending or descending order
++     * @return
++     */
++    @Override
++    public List<Transaction> getTransactionsSorted(String account, boolean asc){
++        List<Transaction> sorted = new ArrayList<>(accountsToTransactions.get(account));
++        if(asc)
++            sorted.sort(Comparator.comparing(Transaction::calculate));
++        else
++            sorted.sort(Comparator.comparing(Transaction::calculate).reversed());
++        return sorted;
++    }
++
++    /**
++     *
++     * @param account  the selected account
++     * @param positive selects if positive or negative transactions are listed
++     * @return
++     */
++    @Override
++    public List<Transaction> getTransactionsByType(String account, boolean positive){
++        List<Transaction> type = new ArrayList<>();
++        List<Transaction> Lists = accountsToTransactions.get(account);
++        for(Transaction tr : Lists){
++            if(positive && tr.calculate()>=0){
++                type.add(tr);
++            }else if(!positive && tr.calculate()<0){
++                type.add(tr);
++            }
++        }
++        return type;
++    }
++}
++
+Index: src/bank/PrivateBank.java
+===================================================================
+diff --git a/src/bank/PrivateBank.java b/src/bank/PrivateBank.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/PrivateBank.java	
+@@ -0,0 +1,312 @@
++package bank;
++
++import bank.exceptions.*;
++import java.util.*;
++
++
++public class PrivateBank implements Bank{
++    private String name;
++    private double incomingInterest;
++    private double OutgoingInterest;
++    private Map<String, List<Transaction>> accountsToTransactions = new HashMap<>();
++
++    private boolean status=true;
++
++    /**
++     *
++     * @param name
++     */
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    /**
++     *
++     * @return
++     */
++    public String getName() {
++        return name;
++    }
++
++    /**
++     *
++     * @param incomingInterest
++     */
++    public void setIncomingInterest(double incomingInterest) {
++        if(incomingInterest > 0 && incomingInterest < 1) {
++            this.incomingInterest = incomingInterest;
++        }else status = false;
++    }
++
++    /**
++     *
++     * @return
++     */
++    public double getIncomingInterest() {
++        return incomingInterest;
++    }
++
++    /**
++     *
++     * @param outgoingInterest
++     */
++    public void setOutgoingInterest(double outgoingInterest) {
++        if(outgoingInterest > 0 && outgoingInterest < 1) {
++            OutgoingInterest = outgoingInterest;
++        }else status = false;
++    }
++
++    /**
++     *
++     * @return
++     */
++    public double getOutgoingInterest() {
++        return OutgoingInterest;
++    }
++
++    /**
++     *
++     * @param name
++     * @param incomingInterest
++     * @param outgoingInterest
++     */
++    public PrivateBank(String name, double incomingInterest, double outgoingInterest){
++        this.name=name;
++        setIncomingInterest(incomingInterest);
++        setOutgoingInterest(outgoingInterest);
++    }
++
++    /**
++     *
++     * @param other
++     */
++    public PrivateBank(PrivateBank other){
++        this(other.name,other.incomingInterest,other.OutgoingInterest);
++    }
++
++    /**
++     * function to write attributes of the class
++     * @return a String of attributes
++     */
++    @Override
++    public String toString(){
++       String res = "Name :"+this.name+
++                "\nIncoming interest: "+this.incomingInterest+
++                "\nOutgoing interest: "+this.OutgoingInterest;
++      Set<String> keys = accountsToTransactions.keySet();
++      for(String key:keys){
++          res+="\n"+key+"=> \n";
++          List<Transaction> Lists = accountsToTransactions.get(key);
++          res+="[\n";
++          for(Transaction transaction:Lists)
++              res+=transaction;
++          res+="]\n";
++      }
++      return res;
++    }
++
++    /**
++     * function to compare current Variable and an Object
++     * @param obj other objekt to compare with
++     * @return whether the result of compare true or false
++     */
++    @Override
++    public boolean equals(Object obj){
++        if(this==obj)
++            return true;
++        if(obj instanceof PrivateBank privateBank){
++            if(this.name==privateBank.name && this.incomingInterest==privateBank.incomingInterest&&this.OutgoingInterest==privateBank.OutgoingInterest){
++                return true;
++            }else
++                return false;
++        }else
++            return false;
++    }
++
++    /**
++     *
++     * @param account the account to be added
++     * @throws AccountAlreadyExistsException
++     */
++    @Override
++    public void createAccount(String account) throws AccountAlreadyExistsException{
++        if(accountsToTransactions.containsKey(account))
++            throw new AccountAlreadyExistsException("account with the name "+account+" in the bank"+name+" already exists!");
++        else {
++            accountsToTransactions.put(account, List.of());
++            System.out.println("account with the name " + account + " has succesfully created in the bank " + name);
++        }
++    }
++
++    /**
++     *
++     * @param account      the account to be added
++     * @param transactions a list of already existing transactions which should be added to the newly created account
++     * @throws AccountAlreadyExistsException
++     * @throws TransactionAlreadyExistException
++     * @throws TransactionAttributeException
++     */
++    @Override
++    public void createAccount(String account, List<Transaction> transactions)
++            throws AccountAlreadyExistsException,TransactionAlreadyExistException,TransactionAttributeException {
++        if (accountsToTransactions.containsKey(account)) {
++            throw new AccountAlreadyExistsException("account with the name " + account + " in the bank" + name + " already exists!");
++        } else {
++            for (Transaction tr : transactions) {
++                if (accountsToTransactions.containsKey(account) && accountsToTransactions.get(account).contains(transactions)) {
++                    throw new TransactionAlreadyExistException("duplicate transaction can not be added to the account!");
++                } else {
++                    if (tr instanceof Payment payment) {
++                        setIncomingInterest(payment.getIncomingInterest());
++                        setOutgoingInterest(payment.getOutgoingInterest());
++                        if (!status) {
++                            throw new TransactionAttributeException("Transaction attribute fails!");
++                        }
++                    }
++
++                }
++            }
++            accountsToTransactions.put(account, transactions);
++            System.out.println("account with the name " + account + " and its transaction has succesfully created in the bank " + name);
++        }
++    }
++
++    /**
++     *
++     * @param account     the account to which the transaction is added
++     * @param transaction the transaction which should be added to the specified account
++     * @throws TransactionAlreadyExistException
++     * @throws AccountDoesNotExistException
++     * @throws TransactionAttributeException
++     */
++    @Override
++    public void addTransaction(String account, Transaction transaction)
++            throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException{
++        if(!accountsToTransactions.containsKey(account)){
++            throw new AccountDoesNotExistException("account with the name "+account+" in the bank"+name+" does not exist!");
++        }else {
++            if(accountsToTransactions.get(account).contains(transaction)){
++                throw new TransactionAlreadyExistException("this transaction is already exist in the account "+account);
++            }else{
++                if(transaction instanceof Payment payment) {
++                    setIncomingInterest(payment.getIncomingInterest());
++                    setOutgoingInterest(payment.getOutgoingInterest());
++                    if(!status){
++                        throw new TransactionAttributeException("Transaction attribute fails!");
++
++                    }
++                }
++                List<Transaction> Lists = new ArrayList<>(accountsToTransactions.get(account));
++                Lists.add(transaction);
++                accountsToTransactions.put(account,Lists);
++                System.out.println("Transaction successfully added");
++
++            }
++        }
++    }
++
++
++    /**
++     *
++     * @param account     the account from which the transaction is removed
++     * @param transaction the transaction which is removed from the specified account
++     * @throws AccountDoesNotExistException
++     * @throws TransactionDoesNotExistException
++     */
++    @Override
++    public void removeTransaction(String account, Transaction transaction)
++            throws AccountDoesNotExistException, TransactionDoesNotExistException{
++        if(!accountsToTransactions.containsKey(account)){
++            throw new AccountDoesNotExistException("account with the name "+account+" in the bank"+name+" does not exist!");
++        }else {
++            if(!accountsToTransactions.get(account).contains(transaction)){
++                throw new TransactionDoesNotExistException("this transaction does not exist in the account "+account);
++            }else{
++                accountsToTransactions.get(account).remove(transaction);
++                System.out.println("Transaction successfully removed");
++            }
++        }
++    }
++
++    /**
++     *
++     * @param account     the account from which the transaction is checked
++     * @param transaction the transaction to search/look for
++     * @return
++     */
++    @Override
++    public boolean containsTransaction(String account, Transaction transaction){
++        if(accountsToTransactions.containsKey(account)){
++            if(accountsToTransactions.get(account).contains(transaction))
++                return true;
++            else
++                return false;
++        }else
++            return false;
++    }
++
++    /**
++     *
++     * @param account the selected account
++     * @return
++     */
++    @Override
++    public double getAccountBalance(String account){
++        double balance=0;
++        List<Transaction> Lists = accountsToTransactions.get(account);
++        for(Transaction tr:Lists){
++            if(tr instanceof Transfer transfer && transfer.getSender()==account)
++                balance-=tr.calculate();
++            else
++            balance += tr.calculate();
++        }
++        return balance;
++    }
++
++    /**
++     *
++     * @param account the selected account
++     * @return
++     */
++    @Override
++    public List<Transaction> getTransactions(String account){
++        return accountsToTransactions.get(account);
++    }
++
++    /**
++     *
++     * @param account the selected account
++     * @param asc     selects if the transaction list is sorted in ascending or descending order
++     * @return
++     */
++    @Override
++    public List<Transaction> getTransactionsSorted(String account, boolean asc){
++        List<Transaction> sorted = new ArrayList<>(accountsToTransactions.get(account));
++        if(asc)
++            sorted.sort(Comparator.comparing(Transaction::calculate));
++        else
++            sorted.sort(Comparator.comparing(Transaction::calculate).reversed());
++        return sorted;
++    }
++
++    /**
++     *
++     * @param account  the selected account
++     * @param positive selects if positive or negative transactions are listed
++     * @return
++     */
++    @Override
++    public List<Transaction> getTransactionsByType(String account, boolean positive){
++        List<Transaction> type = new ArrayList<>();
++        List<Transaction> Lists = accountsToTransactions.get(account);
++        for(Transaction tr : Lists){
++            if(positive && tr.calculate()>=0){
++                type.add(tr);
++            }else if(!positive && tr.calculate()<0){
++                type.add(tr);
++            }
++        }
++        return type;
++    }
++}
++
+Index: src/bank/exceptions/AccountAlreadyExistsException.java
+===================================================================
+diff --git a/src/bank/exceptions/AccountAlreadyExistsException.java b/src/bank/exceptions/AccountAlreadyExistsException.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/exceptions/AccountAlreadyExistsException.java	
+@@ -0,0 +1,7 @@
++package bank.exceptions;
++
++public class AccountAlreadyExistsException extends Exception{
++    public AccountAlreadyExistsException(String message){
++        super(message);
++    }
++}
+Index: src/bank/exceptions/TransactionAlreadyExistException.java
+===================================================================
+diff --git a/src/bank/exceptions/TransactionAlreadyExistException.java b/src/bank/exceptions/TransactionAlreadyExistException.java
+new file mode 100644
+--- /dev/null	
++++ b/src/bank/exceptions/TransactionAlreadyExistException.java	
+@@ -0,0 +1,8 @@
++package bank.exceptions;
++
++
++public class TransactionAlreadyExistException extends Exception {
++    public TransactionAlreadyExistException(String message){
++        super(message);
++    }
++}
+diff --git a/Praktikum2.iml b/Praktikum.iml
+rename from Praktikum2.iml
+rename to Praktikum.iml
