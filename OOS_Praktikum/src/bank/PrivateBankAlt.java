@@ -159,22 +159,25 @@ public class PrivateBankAlt implements Bank {
         if (accountsToTransactions.containsKey(account)) {
             throw new AccountAlreadyExistsException("account with the name " + account + " in the bank" + name + " already exists!");
         } else {
+            List<Transaction> Lists = new ArrayList<>();
             for (Transaction tr : transactions) {
-                if (accountsToTransactions.containsKey(account) && accountsToTransactions.get(account).contains(transactions)) {
+                if (Lists.contains(tr)) {
                     throw new TransactionAlreadyExistException("duplicate transaction can not be added to the account!");
                 } else {
+
                     if (tr instanceof Payment payment) {
                         if (payment.getIncomingInterest()<0||payment.getIncomingInterest()>1||payment.getOutgoingInterest()<0||payment.getOutgoingInterest()>1) {
                             throw new TransactionAttributeException("Transaction attribute fails!");
                         }else{
-                            payment.setOutgoingInterest(this.OutgoingInterest);
-                            payment.setIncomingInterest(this.incomingInterest);
+                            this.setIncomingInterest(payment.getIncomingInterest());
+                            this.setOutgoingInterest(payment.getOutgoingInterest());
                         }
                     }
+                    Lists.add(tr);
 
                 }
             }
-            accountsToTransactions.put(account, transactions);
+            accountsToTransactions.put(account, Lists);
             System.out.println("account with the name " + account + " and its transaction has succesfully created in the bank " + name);
         }
     }

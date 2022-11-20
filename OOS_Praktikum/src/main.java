@@ -53,67 +53,6 @@ public class main {
         System.out.println(privateBankAlt.getTransactions("Alexa"));
         System.out.println(privateBankAlt.getAccountBalance("Alexa"));
 
-        System.out.println("\n\nException testen:\n");
-        try{
-            privateBankAlt.createAccount("Alexa");
-        }catch (AccountAlreadyExistsException fail){
-            System.out.println(fail);
-        }
-
-        try{
-            privateBankAlt.createAccount("Alexa",List.of(new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")));
-        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException fail){
-            System.out.println(fail);
-        }
-
-        try{
-            privateBankAlt.createAccount("Alexa",List.of(new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")));
-        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException fail){
-            System.out.println(fail);
-        }
-
-        try{
-            privateBankAlt.createAccount("Anderson",List.of(new Payment("01.02.2021",-1350,"this is deposit",1.5,0.3)));
-        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException | IncomingException | OutgoingException fail){
-            System.out.println(fail);
-        }
-
-        try{
-            privateBankAlt.addTransaction("Michael", new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa"));
-        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException fail){
-            System.out.println(fail);
-        }
-        try{
-            privateBankAlt.addTransaction("Alexa", new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa"));
-        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException fail){
-            System.out.println(fail);
-        }
-
-        try{
-            privateBankAlt.addTransaction("Alexa", new Payment("01.02.2021",1350,"this is deposit",1.5,0.3));
-        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException | IncomingException | OutgoingException fail){
-            System.out.println(fail);
-        }
-
-        try{
-            privateBankAlt.removeTransaction("Michael",new Payment("01.02.2021",1350,"this is deposit",1.5,0.3));
-        } catch (AccountDoesNotExistException|TransactionDoesNotExistException | IncomingException | OutgoingException fail) {
-            System.out.println(fail);
-        }
-        try{
-            privateBankAlt.removeTransaction("Alexa",new Payment("01.01.2021",-1350,"this is deposit",0.12,0.3));
-        } catch (AccountDoesNotExistException|TransactionDoesNotExistException fail) {
-            System.out.println(fail);
-        }
-
-        System.out.println(privateBankAlt);
-        try{
-            privateBankAlt.removeTransaction("Alexa",new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3));
-        } catch (AccountDoesNotExistException|TransactionDoesNotExistException fail) {
-            System.out.println(fail);
-        }
-        System.out.println(privateBankAlt);
-
         System.out.println("\n\nsorted Funktionen testen:\n");
 
         System.out.println(privateBankAlt.getTransactionsSorted("Alexa",true));
@@ -155,6 +94,77 @@ public class main {
 
         System.out.println(privateBankAlt.equals(privateBankAlt2));
         System.out.println(privateBankAlt.equals(privateBankAlt3));
+
+        Payment pay1 = new Payment("01.02.2021",1200,"this is deposit",0.15,0.1);
+        Payment pay2 = new Payment("01.02.2021",1200,"this is deposit",0.15,0.1);
+        System.out.println(pay1.equals(pay2));
+
+
+        System.out.println("\n\nException testen:\n");
+        try{
+            privateBankAlt.createAccount("Alexa");
+        }catch (AccountAlreadyExistsException fail){
+            System.out.println(fail);
+        }
+
+        try{
+            privateBankAlt.createAccount("Alexa",List.of(new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")));
+        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException fail){
+            System.out.println(fail);
+        }
+
+        try{
+            privateBankAlt.createAccount("Alexa",List.of(new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa")));
+        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException fail){
+            System.out.println(fail);
+        }
+
+        try{
+            privateBankAlt.createAccount("Anderson",List.of(new Payment("01.02.2021",-1350,"this is deposit",1.5,0.3)));
+        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException | IncomingException | OutgoingException fail){
+            System.out.println(fail);
+        }
+        try{
+            privateBankAlt.createAccount("Anderson",List.of(new Payment("01.02.2021",-1350,"this is deposit",0.5,0.3),new Payment("01.02.2021",-1350,"this is deposit",0.5,0.3)));
+        }catch (AccountAlreadyExistsException | TransactionAlreadyExistException | TransactionAttributeException | IncomingException | OutgoingException fail){
+            System.out.println(fail);
+        }
+
+        try{
+            privateBankAlt.addTransaction("Michael", new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa"));
+        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException fail){
+            System.out.println(fail);
+        }
+        try{
+            privateBankAlt.addTransaction("Alexa", new Transfer("02.08.2022",520,"this is Transfer","Antonio","Alexa"));
+        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException fail){
+            System.out.println(fail);
+        }
+
+        try{
+            privateBankAlt.addTransaction("Alexa", new Payment("01.02.2021",1350,"this is deposit",1.5,0.3));
+        }catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException | IncomingException | OutgoingException fail){
+            System.out.println(fail);
+        }
+
+        try{
+            privateBankAlt.removeTransaction("Michael",new Payment("01.02.2021",1350,"this is deposit",1.5,0.3));
+        } catch (AccountDoesNotExistException|TransactionDoesNotExistException | IncomingException | OutgoingException fail) {
+            System.out.println(fail);
+        }
+        try{
+            privateBankAlt.removeTransaction("Alexa",new Payment("01.01.2021",-1350,"this is deposit",0.12,0.3));
+        } catch (AccountDoesNotExistException|TransactionDoesNotExistException fail) {
+            System.out.println(fail);
+        }
+
+        try{
+            privateBankAlt.removeTransaction("michael",new Payment("01.02.2021",-1350,"this is deposit",0.12,0.3));
+        } catch (AccountDoesNotExistException|TransactionDoesNotExistException fail) {
+            System.out.println(fail);
+        }
+
+
 
     }
 
