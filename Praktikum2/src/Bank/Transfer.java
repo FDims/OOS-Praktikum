@@ -1,4 +1,4 @@
-package Bank;
+package bank;
 
 public class Transfer extends Transaction implements CalculateBill{
     private String sender;                          //Attribute für die Name von Sender
@@ -100,8 +100,8 @@ public class Transfer extends Transaction implements CalculateBill{
     }
 
     /**
-     *
-     * @return
+     * function to write attributes of the class
+     * @return a String of attributes
      */
     @Override
     public String toString(){
@@ -114,9 +114,9 @@ public class Transfer extends Transaction implements CalculateBill{
     }
 
     /**
-     *
-     * @param obj
-     * @return
+     * function to compare current Variable and an Object
+     * @param obj other objekt to compare with
+     * @return whether the result of compare true or false
      */
     @Override
     public boolean equals (Object obj){

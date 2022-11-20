@@ -1,4 +1,4 @@
-package Bank;
+package bank;
 
 public abstract class Transaction implements CalculateBill{
     protected String date;
@@ -67,8 +67,8 @@ public abstract class Transaction implements CalculateBill{
     }
 
     /**
-     *
-     * @return
+     * function to write attributes of the class
+     * @return a String of attributes
      */
     public String toString(){
         if(!status)
@@ -80,9 +80,9 @@ public abstract class Transaction implements CalculateBill{
     }
 
     /**
-     *
-     * @param obj
-     * @return
+     * function to compare current Variable and an Object
+     * @param obj other objekt to compare with
+     * @return whether the result of compare true or false
      */
     @Override
     public boolean equals(Object obj){

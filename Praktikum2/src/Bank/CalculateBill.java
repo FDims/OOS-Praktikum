@@ -1,4 +1,4 @@
-package Bank;
+package bank;
 
 public interface CalculateBill {
     public double calculate();
