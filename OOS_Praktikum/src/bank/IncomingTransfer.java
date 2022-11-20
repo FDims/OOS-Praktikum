@@ -3,10 +3,10 @@ package bank;
 public class IncomingTransfer extends Transfer{
 
     /**
-     *
+     * 
      * @param date
-     * @param desc
      * @param amount
+     * @param desc
      */
      public IncomingTransfer(String date,  double amount,String desc){
          super(date,amount,desc);
