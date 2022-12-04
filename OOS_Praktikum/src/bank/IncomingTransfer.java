@@ -3,7 +3,7 @@ package bank;
 public class IncomingTransfer extends Transfer{
 
     /**
-     * 
+     *
      * @param date
      * @param amount
      * @param desc
