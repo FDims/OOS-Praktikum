@@ -1,0 +1,39 @@
+[{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "date": "22.06.1998",
+    "amount": 435.0,
+    "description": "Payment",
+    "incomingInterest": 0.3,
+    "outgoingInterest": 0.25
+  }
+},{
+  "CLASSNAME": "IncomingTransfer",
+  "INSTANCE": {
+    "date": "03.03.2000",
+    "amount": 80.0,
+    "description": "IncomingTransfer from Molziles to Elixir",
+    "sender": "Molziles",
+    "recipient": "Elixir"
+  }
+},{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "date": "05.08.2022",
+    "amount": -118.0,
+    "description": "Payment",
+    "incomingInterest": 0.3,
+    "outgoingInterest": 0.25
+  }
+},{
+  "CLASSNAME": "OutgoingTransfer",
+  "INSTANCE": {
+    "date": "15.04.1990",
+    "amount": 185.0,
+    "description": "OutgoingTransfer to Hagen",
+    "sender": "Elixir",
+    "recipient": "Hagen"
+  }
+},{
+  "CLASSNAME": "OutgoingTransfer",
+  "INSTANCE
