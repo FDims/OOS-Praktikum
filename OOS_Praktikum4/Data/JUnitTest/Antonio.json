@@ -25,4 +25,13 @@
     "incomingInterest": 0.15,
     "outgoingInterest": 0.12
   }
-},
+},{
+  "CLASSNAME": "IncomingTransfer",
+  "INSTANCE": {
+    "date": "02.08.2022",
+    "amount": 950.0,
+    "description": "this is Transfer",
+    "sender": "Alexa",
+    "recipient": "Antonio"
+  }
+}]

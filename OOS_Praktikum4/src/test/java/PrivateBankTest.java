@@ -28,7 +28,9 @@ public class PrivateBankTest {
             Files.deleteIfExists(Path.of("data/JUnitTest"));
         }
 
+
         privateBank = new PrivateBank("JUnitTest", 0.15, 0.12, "JUnitTest");
+        copyPrivateBank = new PrivateBank(privateBank);
         privateBank.createAccount("Alexa", List.of(
                 new OutgoingTransfer("02.08.2022", 560, "this is Transfer", "Alexa", "Jessica"),
                 new Payment("01.02.2021", 1255, "this is deposit", 0.15, 0.1),
@@ -41,7 +43,7 @@ public class PrivateBankTest {
                 new Payment("01.02.2021", -1100, "this is deposit", 0.12, 0.3),
                 new IncomingTransfer("02.08.2022", 950, "this is Transfer", "Alexa", "Antonio")
         ));
-       // copyPrivateBank = new PrivateBank(privateBank);
+
     }
 
     @Test
@@ -53,14 +55,14 @@ public class PrivateBankTest {
         assertEquals("JUnitTest", privateBank.getDirectoryName());
     }
 
-   /* @Test
+   @Test
        @Order(1)
     public void copyConstructorTest() {
         assertEquals(privateBank.getName(), copyPrivateBank.getName());
         assertEquals(privateBank.getIncomingInterest(), copyPrivateBank.getIncomingInterest());
         assertEquals(privateBank.getOutgoingInterest(), copyPrivateBank.getOutgoingInterest());
         assertEquals(privateBank.getDirectoryName(), copyPrivateBank.getDirectoryName());
-    }*/
+    }
 
 
     @ParameterizedTest

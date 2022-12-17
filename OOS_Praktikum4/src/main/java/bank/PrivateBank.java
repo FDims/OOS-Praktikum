@@ -86,8 +86,11 @@ public class PrivateBank implements Bank {
     /**
      * @param dirName
      */
-    public void setPath(String dirName) {
-        path = "Data/" + dirName;
+    public void setPath(String dirName,boolean copycons) {
+        if(!copycons)
+            path = "Data/" + dirName;
+        else
+            path = "Data/copy/"+dirName;
     }
 
     /**
@@ -109,7 +112,7 @@ public class PrivateBank implements Bank {
         this.directoryName = directoryName;
         setIncomingInterest(incomingInterest);
         setOutgoingInterest(outgoingInterest);
-        setPath(directoryName);
+        setPath(directoryName,false);
         try {
             Path path = Paths.get(this.path);
             if (Files.notExists(path)) {
@@ -130,7 +133,19 @@ public class PrivateBank implements Bank {
      */
     public PrivateBank(PrivateBank other) throws IncomingException, OutgoingException {
         this(other.name, other.incomingInterest, other.OutgoingInterest, other.directoryName);
-
+        this.accountsToTransactions=other.accountsToTransactions;
+        setPath(other.directoryName,true);
+        try {
+            Path path = Paths.get(this.path);
+            if (Files.notExists(path)) {
+                Files.createDirectories(path);
+                System.out.println("\n new Directory " + this.name + " created succesfully");
+            } else {
+                readAccounts();
+            }
+        } catch (IOException | AccountAlreadyExistsException fail) {
+            System.out.println("Failed to create directory");
+        }
     }
 
 
@@ -411,7 +426,7 @@ public class PrivateBank implements Bank {
                         PrivateBank.this.addTransaction(accountName,outgoingTransfer);
                     }
                 }
-            }catch (IOException e){
+            }catch (IOException | JsonParseException e){
                 e.printStackTrace();
             } catch (TransactionAlreadyExistException|AccountDoesNotExistException|TransactionAttributeException|IncomingException|OutgoingException e) {
                 System.out.println(e);
@@ -419,8 +434,7 @@ public class PrivateBank implements Bank {
         }
     }
     private void writeAccount(String account) throws IOException{
-        FileWriter file = new FileWriter(getPath()+'/'+account+".json");
-        try{
+        try(FileWriter file = new FileWriter(getPath()+'/'+account+".json")){
             file.write('[');
             for (Transaction transaction: accountsToTransactions.get(account)){
                 GsonBuilder gsonBuilder = new GsonBuilder();

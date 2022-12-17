@@ -167,7 +167,7 @@ public class main {
 
         PrivateBank deutscheBank = new PrivateBank("Deutsche Bank",0.3 , 0.25, "Deutsche Bank");
         try {
-            deutscheBank.createAccount("Molziles", List.of(
+            deutscheBank.createAccount("Alexa", List.of(
                     new Payment("12.03.2008", 321, "Payment"),
                     new Payment("23.09.1897",  -2500,"Payment", 0.8, 0.5),
                     new OutgoingTransfer("03.03.2000",  80,"OutgoingTransfer to Elixir", "Molziles", "Elixir")
@@ -179,19 +179,19 @@ public class main {
         }
 
         try {
-            deutscheBank.createAccount("Elixir", List.of(
+            deutscheBank.createAccount("John", List.of(
                     new Payment("22.06.1998",  435,"Payment", 0., 0.),
-                    new IncomingTransfer("03.03.2000",  80,"IncomingTransfer from Molziles to Elixir", "Molziles", "Elixir"),
+                    new IncomingTransfer("03.03.2000",  80,"IncomingTransfer from John to Alexa", "John", "Alexa"),
                     new Payment("05.08.2022",  -118,"Payment", 0., 0.),
-                    new OutgoingTransfer("15.04.1990",  185,"OutgoingTransfer to Hagen", "Elixir", "Hagen"),
-                    new OutgoingTransfer("30.07.2020",  1890,"OutgoingTransfer to Hagen", "Elixir", "Hagen")
+                    new OutgoingTransfer("15.04.1990",  185,"OutgoingTransfer to Jessica", "Alexa", "Jessica"),
+                    new OutgoingTransfer("30.07.2020",  1890,"OutgoingTransfer to Hagen", "Alexa", "Jessica")
             ));
         } catch (AccountAlreadyExistsException | IOException e) {
             System.out.println(e);
         }
 
         try {
-            deutscheBank.createAccount("Hagen");
+            deutscheBank.createAccount("John");
         } catch (AccountAlreadyExistsException | IOException e) {
             System.out.println(e);
         }
@@ -205,13 +205,13 @@ public class main {
         }
 
         try {
-            deutscheBank.addTransaction("Molziles", new Payment("19.01.2011",  -789,"Payment", 0.9, 0.25));
+            deutscheBank.addTransaction("John", new Payment("19.01.2011",  -789,"Payment", 0.9, 0.25));
         } catch (TransactionAlreadyExistException | AccountDoesNotExistException | IOException e) {
             System.out.println(e);
         }
 
         try {
-            deutscheBank.addTransaction("Molziles", new Payment("19.01.2011",  -789,"Payment", 0.9, 0.25));
+            deutscheBank.addTransaction("John", new Payment("19.01.2011",  -789,"Payment", 0.9, 0.25));
         } catch (TransactionAlreadyExistException|AccountDoesNotExistException e) {
             System.out.println(e);
 
@@ -222,7 +222,7 @@ public class main {
 
         PrivateBank sparkasse = new PrivateBank("Sparkasse", 0.05, 0.11, "Sparkasse");
         try {
-            sparkasse.addTransaction("Hagen", new Payment("19.01.2011",  -789,"Payment", 0.9, 0.25));
+            sparkasse.addTransaction("Jessica", new Payment("19.01.2011",  -789,"Payment", 0.9, 0.25));
         } catch (AccountDoesNotExistException e) {
             System.out.println(e);
         } catch (IOException e) {
@@ -230,16 +230,34 @@ public class main {
         }
 
         try {
-            sparkasse.createAccount("Rehman");
+            sparkasse.createAccount("Lee");
         } catch (AccountAlreadyExistsException | IOException e) {
             System.out.println(e);
         }
+        try{
+            sparkasse.addTransaction("Lee",new Transfer("02.08.2022",520,"this is Transfer","Antonio","Jessica"));
+        } catch (AccountDoesNotExistException e) {
+            System.out.println(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         System.out.println("\n" + sparkasse);
 
 
-        PrivateBank aachenerBank = new PrivateBank("Aachener Bank", 0.26 ,0.11,"Aachen" );
+        PrivateBank aachenerBank = new PrivateBank("Aachener Bank", 0.26 ,0.11,"Aachener" );
         System.out.println(aachenerBank);
+        try{
+            aachenerBank.createAccount("Antonio",List.of(new OutgoingTransfer("02.08.2022",520,"this is Transfer","Antonio","Jessica"),
+                    new Payment("01.02.2021",1200,"this is deposit",0.15,0.1),
+                    new Payment("01.02.2021",-1100,"this is deposit",0.12,0.3),
+                    new IncomingTransfer("02.08.2022",450,"this is Transfer","Alexa","Antonio")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (AccountAlreadyExistsException e){
+            System.out.println(e);
+        }
 
     }
 
