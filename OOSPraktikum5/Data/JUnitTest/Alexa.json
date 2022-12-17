@@ -1,0 +1,19 @@
+[{
+  "CLASSNAME": "OutgoingTransfer",
+  "INSTANCE": {
+    "date": "02.08.2022",
+    "amount": 560.0,
+    "description": "this is Transfer",
+    "sender": "Alexa",
+    "recipient": "Jessica"
+  }
+},{
+  "CLASSNAME": "Payment",
+  "INSTANCE": {
+    "date": "01.02.2021",
+    "amount": 1255.0,
+    "description": "this is deposit",
+    "incomingInterest": 0.15,
+    "outgoingInterest": 0.12
+  }
+},
