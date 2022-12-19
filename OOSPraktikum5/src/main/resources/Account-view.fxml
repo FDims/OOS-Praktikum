@@ -36,7 +36,7 @@
             <Font size="14.0" />
         </font>
     </MenuButton>
-    <StackPane layoutX="17.0" layoutY="59.0" prefHeight="237.0" prefWidth="565.0">
+    <StackPane layoutX="150.0" layoutY="281.0" prefHeight="23.0" prefWidth="296.0">
         <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" />
     </StackPane>
     <MenuButton fx:id="addButton" layoutX="472.0" layoutY="25.0" mnemonicParsing="false" text="Add Transaction" textAlignment="CENTER">
