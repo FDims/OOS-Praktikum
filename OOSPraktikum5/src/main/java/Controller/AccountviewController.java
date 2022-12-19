@@ -56,6 +56,8 @@ public class AccountviewController implements Initializable {
     @FXML
     public Text accountName;
     @FXML
+    public Text balance;
+    @FXML
     public Button backButton;
 
     private void updateListView(List<Transaction> listTransaction) {
@@ -148,7 +150,8 @@ public class AccountviewController implements Initializable {
                             e.printStackTrace();
                         }
                         updateListView(bank.getTransactions(name));
-                        accountName.setText(name + " [" + bank.getAccountBalance(name) + "€]");
+                        accountName.setText("Account: "+name);
+                        balance.setText("Account Balance : "+bank.getAccountBalance(name)+"€");
                     }
 
                 }
@@ -199,7 +202,8 @@ public class AccountviewController implements Initializable {
                                 System.out.println(e);
                             }
                             updateListView(bank.getTransactions(name));
-                            accountName.setText(name + " [" + bank.getAccountBalance(name) + "€]");
+                            accountName.setText("Account: "+name);
+                            balance.setText("Account Balance : "+bank.getAccountBalance(name)+"€");
 
                         }
 
@@ -246,7 +250,8 @@ public class AccountviewController implements Initializable {
                                 e.printStackTrace();
                             }
                             updateListView(bank.getTransactions(name));
-                            accountName.setText(name + " [" + bank.getAccountBalance(name) + "€]");
+                            accountName.setText("Account: "+name);
+                            balance.setText("Account Balance : "+bank.getAccountBalance(name)+"€");
                         }
                     }
                     return null;
@@ -257,7 +262,8 @@ public class AccountviewController implements Initializable {
 
     public void setupData(PrivateBank privateBank, String name) {
         bank = privateBank;
-        accountName.setText(name + " [" + bank.getAccountBalance(name) + "€]");
+        accountName.setText("Account: "+name);
+        balance.setText("Account Balance : "+bank.getAccountBalance(name)+"€");
         updateListView(bank.getTransactions(name));
 
         ContextMenu contextMenu = new ContextMenu();
@@ -288,7 +294,8 @@ public class AccountviewController implements Initializable {
                 System.out.println("[" + selectedTransaction.toString().replace("\n", "]") + " is deleted");
                 text.setText(selectedTransaction.toString().replace("\n", "]") + " is deleted");
                 updateListView(bank.getTransactions(name));
-                accountName.setText(name + " [" + bank.getAccountBalance(name) + "€]");
+                accountName.setText("Account: "+name);
+                balance.setText("Account Balance : "+bank.getAccountBalance(name)+"€");
             }
         });
 

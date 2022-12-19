@@ -5,13 +5,13 @@
 
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="root" prefHeight="450.0"
-            prefWidth="350.0"
+<AnchorPane fx:id="root" prefHeight="400"
+            prefWidth="600"
             xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controller.MainviewController">
-    <ListView fx:id="accListView" layoutX="60.0" layoutY="92.0" prefHeight="235.0" prefWidth="232.0" />
-    <Text layoutX="58.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of all account" textAlignment="CENTER" wrappingWidth="235">
+    <ListView fx:id="accListView" layoutX="42.0" layoutY="61.0" prefHeight="260.0" prefWidth="511.0" />
+    <Text layoutX="167.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Accounts on Bank" textAlignment="CENTER" wrappingWidth="242.13671875">
         <font>
             <Font size="30.0" />
         </font>
@@ -23,9 +23,10 @@
             </font>
         </Text>
     </StackPane>
-    <Button fx:id="button" layoutX="280.0" layoutY="380.0" mnemonicParsing="false" text="ADD" textAlignment="CENTER">
+    <Button fx:id="button" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" text="Add account" >
         <font>
             <Font size="14.0" />
         </font>
     </Button>
+    <Text layoutX="409.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By Fachrial Dimas Putra Perdana" />
 </AnchorPane>

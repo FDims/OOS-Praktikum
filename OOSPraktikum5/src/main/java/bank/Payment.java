@@ -32,7 +32,6 @@ public class Payment extends Transaction implements CalculateBill{
      */
     public void setIncomingInterest(double incomingInterest) throws IncomingException{
         if(incomingInterest < 0 || incomingInterest > 1) {                                                          //Überprüfung die Zahl von Zinsen der Einzahlung
-            status = false;
             throw new IncomingException("Value of Incoming Interest must be between 0 and 1");    //Error Message
         }else {
             this.incomingInterest = incomingInterest;
@@ -53,7 +52,6 @@ public class Payment extends Transaction implements CalculateBill{
      */
     public void setOutgoingInterest(double outgoingInterest) throws OutgoingException{
         if(outgoingInterest < 0 || outgoingInterest > 1) {                                                       //Überprüfung die Zahl von Zinsen der Auszahlung
-            status=false;
             throw new OutgoingException("Value of Incoming Interest must be between 0 and 1");
         }else {
             this.outgoingInterest = outgoingInterest;
@@ -109,9 +107,6 @@ public class Payment extends Transaction implements CalculateBill{
      */
     @Override
     public String toString(){
-        if(!status)
-            return super.toString();
-        else
         return super.toString()+
                 "\n Incoming interest: " +incomingInterest+
                 "\n Outgoing interest: "+outgoingInterest+"\n";

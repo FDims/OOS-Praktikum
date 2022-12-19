@@ -185,7 +185,6 @@ public class PrivateBank implements Bank {
             throw new AccountAlreadyExistsException("account with the name " + account + " in the bank" + name + " already exists!");
         else {
             accountsToTransactions.put(account, List.of());
-            writeAccount(account);
             System.out.println("account with the name " + account + " has succesfully created in the bank " + name);
         }
     }
@@ -423,22 +422,22 @@ public class PrivateBank implements Bank {
         }
     }
     private void writeAccount(String account) throws IOException{
-        try(FileWriter file = new FileWriter(getPath()+'/'+account+".json")){
-            file.write('[');
-            for (Transaction transaction: accountsToTransactions.get(account)){
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(transaction.getClass(),new De_Serialization());
-                gsonBuilder.setPrettyPrinting();
-                Gson gson = gsonBuilder.create();
-                String json = gson.toJson(transaction);
-                if(accountsToTransactions.get(account).indexOf(transaction)!=0)
-                    file.write(',');
-                file.write(json);
+            try (FileWriter file = new FileWriter(getPath() + '/' + account + ".json")) {
+                file.write('[');
+                for (Transaction transaction : accountsToTransactions.get(account)) {
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    gsonBuilder.registerTypeAdapter(transaction.getClass(), new De_Serialization());
+                    gsonBuilder.setPrettyPrinting();
+                    Gson gson = gsonBuilder.create();
+                    String json = gson.toJson(transaction);
+                    if (accountsToTransactions.get(account).indexOf(transaction) != 0)
+                        file.write(',');
+                    file.write(json);
+                }
+                file.write(']');
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            file.write(']');
-        }catch (IOException e){
-            e.printStackTrace();
-        }
 
     }
 

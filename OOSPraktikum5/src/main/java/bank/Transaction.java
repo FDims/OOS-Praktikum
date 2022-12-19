@@ -6,7 +6,6 @@ public abstract class Transaction implements CalculateBill{
     protected String date;
     protected double amount;
     protected String description;
-    protected boolean status = true;
 
     /**
      *
@@ -15,7 +14,6 @@ public abstract class Transaction implements CalculateBill{
     public void setAmount(double amount) throws AmountException {
         if(this instanceof Transfer transfer){
             if(amount<0) {
-                status = false;
                 throw new AmountException("Amount of Payment can not be negative!");
             }else
                 this.amount=amount;
@@ -80,9 +78,6 @@ public abstract class Transaction implements CalculateBill{
      * @return a String of attributes
      */
     public String toString(){
-        if(!status)
-          return "Transaction is failed.\n";
-        else
         return " Date of Transaction: " +date+
                 "\n Amount of Transaction: " + calculate() +
                 "\n Description: " +description;

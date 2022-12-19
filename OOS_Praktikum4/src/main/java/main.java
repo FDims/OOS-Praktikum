@@ -165,7 +165,7 @@ public class main {
             System.out.println(fail);
         }*/
 
-        PrivateBank deutscheBank = new PrivateBank("Deutsche Bank",0.3 , 0.25, "Deutsche Bank");
+        /*PrivateBank deutscheBank = new PrivateBank("Deutsche Bank",0.3 , 0.25, "Deutsche Bank");
         try {
             deutscheBank.createAccount("Alexa", List.of(
                     new Payment("12.03.2008", 321, "Payment"),
@@ -257,8 +257,12 @@ public class main {
             e.printStackTrace();
         }catch (AccountAlreadyExistsException e){
             System.out.println(e);
-        }
+        }*/
+        PrivateBank deutscheBank = new PrivateBank("Deutsche Bank", 0.3, 0.25, "Deutsche Bank");
+        deutscheBank.getTransactions("John");
 
     }
+
+
 
 }

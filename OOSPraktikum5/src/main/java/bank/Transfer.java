@@ -52,7 +52,6 @@ public class Transfer extends Transaction implements CalculateBill{
     @Override
     public void setAmount(double amount) throws AmountException {
         if(amount<0) {
-            status = false;
              throw new AmountException("Amount of Payment can not be negative!");
         }else
             this.amount=amount;
@@ -107,9 +106,6 @@ public class Transfer extends Transaction implements CalculateBill{
      */
     @Override
     public String toString(){
-        if(!status)
-            return super.toString();
-        else
         return super.toString()+
                 "\n Sender: " +sender+
                 "\n Recipient: "+recipient+"\n";
