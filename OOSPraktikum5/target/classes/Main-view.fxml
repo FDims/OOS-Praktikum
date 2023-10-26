@@ -25,7 +25,7 @@
     </StackPane>
     <Button fx:id="button" layoutX="483.0" layoutY="16.0" mnemonicParsing="false" text="Add account" >
         <font>
-            <Font size="14.0" />
+            <Font size="12.0" />
         </font>
     </Button>
     <Text layoutX="409.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By Fachrial Dimas Putra Perdana" />

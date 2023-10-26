@@ -1,6 +1,8 @@
 package bank;
 import bank.exceptions.AmountException;
 
+import java.util.Objects;
+
 public class Transfer extends Transaction implements CalculateBill{
     private String sender;                          //Attribute für die Name von Sender
     private String recipient;                       //Attribüte für die Name von Empfänger
@@ -121,7 +123,7 @@ public class Transfer extends Transaction implements CalculateBill{
         if(this==obj)
             return true;
         if(obj instanceof Transfer transfer){
-            if(super.equals(transfer) && this.sender==transfer.sender && this.recipient==transfer.recipient)
+            if(super.equals(transfer) && Objects.equals(this.sender, transfer.sender) && Objects.equals(this.recipient, transfer.recipient))
                 return true;
             else
                 return false;

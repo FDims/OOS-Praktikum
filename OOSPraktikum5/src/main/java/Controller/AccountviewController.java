@@ -104,7 +104,7 @@ public class AccountviewController implements Initializable {
         dialog.show();
         if (Objects.equals(menuItem.getId(), "payment")) {
             dialog.setTitle("Add new payment");
-            dialog.setHeaderText("Add a new payment to account [" + name + "]");
+            dialog.setHeaderText("Add a new payment to account :" + name);
 
             incomingInterest_sender.setText("Incoming interest: ");
             outgoingInterest_recipient.setText("Outgoing interest: ");
@@ -117,10 +117,10 @@ public class AccountviewController implements Initializable {
                             Objects.equals(incomingInterest_senderText.getText(), "") ||
                             Objects.equals(outgoingInterest_recipientText.getText(), ""))
                     {
-                        invalid.setContentText("Please insert valid value!");
+                        invalid.setContentText("Value is not valid, please insert valid value!");
                         Optional<ButtonType> result = invalid.showAndWait();
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            text.setText("No new payment was added!");
+                            text.setText("Unable to add new payment!");
                         }
                     } else {
                         Payment payment = null;
@@ -131,7 +131,11 @@ public class AccountviewController implements Initializable {
                                     Double.parseDouble(incomingInterest_senderText.getText()),
                                     Double.parseDouble(outgoingInterest_recipientText.getText()));
                         } catch (IncomingException | OutgoingException e) {
-                            System.out.println(e);
+                            invalid.setContentText("Value of Incoming or Outgoinginterest or both is not valid!");
+                            Optional<ButtonType> result = invalid.showAndWait();
+                            if (result.isPresent() && result.get() == ButtonType.OK) {
+                                text.setText("Unable to add new payment!");
+                            }
                         }
                         try {
                             bank.addTransaction(name, payment);
@@ -163,7 +167,7 @@ public class AccountviewController implements Initializable {
             if (Objects.equals(menuItem.getId(), "incoming")) {
 
                 dialog.setTitle("Add new incoming transfer");
-                dialog.setHeaderText("Add a new incoming transfer to account [" + name + "]");
+                dialog.setHeaderText("Add a new incoming transfer to account :" + name);
 
                 dialog.setResultConverter(buttonType -> {
                     if (buttonType == okButton) {
@@ -173,10 +177,10 @@ public class AccountviewController implements Initializable {
                                 Objects.equals(incomingInterest_senderText.getText(), "") ||
                                 Objects.equals(outgoingInterest_recipientText.getText(), ""))
                         {
-                            invalid.setContentText("Please insert valid value!");
+                            invalid.setContentText("Value is not valid, please insert valid value!");
                             Optional<ButtonType> result = invalid.showAndWait();
                             if (result.isPresent() && result.get() == ButtonType.OK) {
-                                text.setText("No new incoming transfer was added!");
+                                text.setText("Unable to add new incoming Transfer!");
                             }
                         } else {
                             IncomingTransfer incomingTransfer = new IncomingTransfer(dateText.getText(),
@@ -212,7 +216,7 @@ public class AccountviewController implements Initializable {
                 });
             } else  {
                 dialog.setTitle("Add new outgoing transfer");
-                dialog.setHeaderText("Add a new outgoing transfer to account [" + name + "]");
+                dialog.setHeaderText("Add a new outgoing transfer to account :" + name );
 
                 dialog.setResultConverter(buttonType -> {
                     if (buttonType == okButton) {
@@ -222,10 +226,10 @@ public class AccountviewController implements Initializable {
                                 Objects.equals(incomingInterest_senderText.getText(), "") ||
                                 Objects.equals(outgoingInterest_recipientText.getText(), ""))
                         {
-                            invalid.setContentText("Please insert valid value!");
+                            invalid.setContentText("Value is not valid, please insert valid value!");
                             Optional<ButtonType> result = invalid.showAndWait();
                             if (result.isPresent() && result.get() == ButtonType.OK) {
-                                text.setText("No new outcoming transfer was added!");
+                                text.setText("Unable to add new outgoing Transfer!");
                             }
                         } else {
                             OutgoingTransfer outgoingTransfer = new OutgoingTransfer(dateText.getText(),

@@ -26,7 +26,7 @@
                 <groupId>org.openjfx</groupId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <mainClass>D:\GITHUB\OOS-Praktikum\OOSPraktikum5\src\main\java\Controller\Main.java</mainClass>
+                    <mainClass>C:\Users\fachr\Documents\Github\OOS-Praktikum\OOSPraktikum5\src\main\java\Controller\Main.java</mainClass>
                 </configuration>
             </plugin>
         </plugins>

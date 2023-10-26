@@ -2,6 +2,8 @@ package bank;
 
 import bank.exceptions.AmountException;
 
+import java.util.Objects;
+
 public abstract class Transaction implements CalculateBill{
     protected String date;
     protected double amount;
@@ -93,8 +95,8 @@ public abstract class Transaction implements CalculateBill{
         if(this==obj)
             return true;
         if(obj instanceof Transaction transaction){
-            if( this.date==transaction.date && this.amount==transaction.amount
-                    && this.description== transaction.description)
+            if(Objects.equals(this.date, transaction.date) && this.amount==transaction.amount
+                    && Objects.equals(this.description, transaction.description))
                 return true;
             else
                 return false;

@@ -16,4 +16,22 @@
     "incomingInterest": 0.12,
     "outgoingInterest": 0.1
   }
+},{
+  "CLASSNAME": "IncomingTransfer",
+  "INSTANCE": {
+    "date": "12.10.2021",
+    "amount": 1200.0,
+    "description": "Payout",
+    "sender": "Alexa",
+    "recipient": "Andrew"
+  }
+},{
+  "CLASSNAME": "IncomingTransfer",
+  "INSTANCE": {
+    "date": "100",
+    "amount": 100.0,
+    "description": "100",
+    "sender": "100",
+    "recipient": "100"
+  }
 }]

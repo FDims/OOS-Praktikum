@@ -1,10 +1,7 @@
 package Controller;
 
 import bank.PrivateBank;
-import bank.exceptions.AccountAlreadyExistsException;
-import bank.exceptions.AccountDoesNotExistException;
-import bank.exceptions.IncomingException;
-import bank.exceptions.OutgoingException;
+import bank.exceptions.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,10 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainviewController implements Initializable {
@@ -66,7 +60,7 @@ public class MainviewController implements Initializable {
         updateListView();
 
         ContextMenu contextMenu=new ContextMenu();
-        MenuItem view = new MenuItem("View account;");
+        MenuItem view = new MenuItem("View account");
         MenuItem delete = new MenuItem("Delete account");
 
         contextMenu.getItems().addAll(view,delete);
@@ -77,7 +71,7 @@ public class MainviewController implements Initializable {
 
         accListView.setOnMouseClicked(mouseEvent -> {
             selected.set(String.valueOf(accListView.getSelectionModel().getSelectedItems()));
-            text.setText("Account with the name "+selected.toString().replace("[","").replace("]","")+" is selected");
+            text.setText("Account "+selected.toString().replace("[","").replace("]","")+" is selected");
             if(mouseEvent.getClickCount()==2){
                 try{
                     FXMLLoader loader= new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("Account-view.fxml")));
@@ -159,7 +153,7 @@ public class MainviewController implements Initializable {
                     if (!Objects.equals(nameTextField.getText(), "")) {
 
                         try {
-                            Bank.createAccount(nameTextField.getText());
+                            Bank.createAccount(nameTextField.getText(), List.of());
                             text.setText("Account [" + nameTextField.getText() + "] is added to the bank");
                         } catch (AccountAlreadyExistsException | IOException e) {
                             alert.setContentText("Duplicated account!");
@@ -168,6 +162,9 @@ public class MainviewController implements Initializable {
                                 text.setText("Account [" + nameTextField.getText() + "] is already in the bank!");
                             }
                             System.out.println(e.getMessage());
+                        } catch (TransactionAlreadyExistException | TransactionAttributeException | IncomingException |
+                                 OutgoingException e) {
+                            System.out.println(e);
                         }
                         updateListView();
                     }

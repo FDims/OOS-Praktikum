@@ -21,10 +21,10 @@
     </StackPane>
     <Button fx:id="backButton" layoutX="17.0" layoutY="310.0" mnemonicParsing="false" text="Back" textAlignment="CENTER">
         <font>
-            <Font size="14.0" />
+            <Font size="12.0" />
         </font>
     </Button>
-    <MenuButton fx:id="optionsButton" layoutX="409.0" layoutY="25.0" mnemonicParsing="false" text="Sort">
+    <MenuButton fx:id="optionsButton" layoutX="409.0" layoutY="35.0" mnemonicParsing="false" text="Sort">
         <items>
             <MenuItem fx:id="allTransaction" mnemonicParsing="false" text="Default" />
             <MenuItem fx:id="ascending" mnemonicParsing="false" text="Ascending order" />
@@ -33,20 +33,20 @@
             <MenuItem fx:id="negative" mnemonicParsing="false" text="Negative transactions" />
         </items>
         <font>
-            <Font size="14.0" />
+            <Font size="12.0" />
         </font>
     </MenuButton>
-    <StackPane layoutX="150.0" layoutY="281.0" prefHeight="23.0" prefWidth="296.0">
+    <StackPane layoutX="150.0" layoutY="280.0" prefHeight="23.0" prefWidth="296.0">
         <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" />
     </StackPane>
-    <MenuButton fx:id="addButton" layoutX="472.0" layoutY="25.0" mnemonicParsing="false" text="Add Transaction" textAlignment="CENTER">
+    <MenuButton fx:id="addButton" layoutX="472.0" layoutY="35.0" mnemonicParsing="false" text="Add Transaction" textAlignment="CENTER">
         <items>
             <MenuItem fx:id="payment" mnemonicParsing="false" text="New payment" />
             <MenuItem fx:id="incoming" mnemonicParsing="false" text="New incoming transaction" />
             <MenuItem fx:id="outgoing" mnemonicParsing="false" text="New outgoing transaction" />
         </items>
         <font>
-            <Font size="14.0" />
+            <Font size="12.0" />
         </font>
     </MenuButton>
     <Text layoutX="409.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By Fachrial Dimas Putra Perdana" />
